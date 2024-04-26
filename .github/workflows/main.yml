@@ -54,12 +54,12 @@ jobs:
       
       - name: Set Git Config
         run: |
-          git config user.email "shashank.gorana@intimetec.com"
-          git config user.name "shashankgITT"
-          
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+      
       - name: Get New Version
         run: |
-          NEW_VERSION="${{ steps.increment_version.outputs.new_version }}"
+          NEW_VERSION="${{ needs.build-and-release.outputs.new_version }}"
           git tag -a $NEW_VERSION -m "Version $NEW_VERSION"
           git push origin $NEW_VERSION
       
