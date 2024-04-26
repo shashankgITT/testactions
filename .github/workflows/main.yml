@@ -52,6 +52,11 @@ jobs:
 
           sed -i "s/const VERSION = \"$OLD_VERSION\"/const VERSION = \"$NEW_VERSION\"/" "$VERSION_FILE"
       
+      - name: Set Git Config
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
       - name: Get New Version
         run: |
           NEW_VERSION="${{ steps.increment_version.outputs.new_version }}"
