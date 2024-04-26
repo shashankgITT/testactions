@@ -52,6 +52,12 @@ jobs:
 
           sed -i "s/const VERSION = \"$OLD_VERSION\"/const VERSION = \"$NEW_VERSION\"/" "$VERSION_FILE"
       
+      - name: Get New Version
+        run: |
+          NEW_VERSION="${{ needs.build-and-release.outputs.new_version }}"
+          git tag -a $NEW_VERSION -m "Version $NEW_VERSION"
+          git push origin $NEW_VERSION
+      
       - name: Install Dependencies
         run: |
           sudo apt-get update
