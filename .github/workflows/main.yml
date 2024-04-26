@@ -70,5 +70,5 @@ jobs:
       #     mv rogue.tgz build/$NEW_VERSION/rogue$NEW_VERSION.tgz
       #     mv C25_APP* build/$NEW_VERSION
 
-      - name: Pause Execution
-        run: sleep infinity
+      # - name: Pause Execution
+      #   run: sleep infinity
