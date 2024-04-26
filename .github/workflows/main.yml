@@ -21,7 +21,7 @@ jobs:
       - name: Retrieve Version
         id: get_version
         run: |
-          VERSION_FILE="cmd/rogue/pkg/sysinfo/version.go"
+          VERSION_FILE="version.go"
           OLD_VERSION=$(grep -oP 'const VERSION = "\K[^"]+' "$VERSION_FILE")
           echo "::set-output name=old_version::$OLD_VERSION"
       
