@@ -28,7 +28,7 @@ jobs:
       - name: Increment Version
         id: increment_version
         run: |
-          VERSION_FILE="cmd/rogue/pkg/sysinfo/version.go"
+          VERSION_FILE="version.go"
           OLD_VERSION="${{ steps.get_version.outputs.old_version }}"
           IFS='.' read -r -a VERSION_PARTS <<< "$OLD_VERSION"
           MAJOR="${VERSION_PARTS[0]}"
@@ -57,17 +57,17 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libgio2.0-cil-dev libgio2.0-cil-dev libgstreamer1.0-dev
 
-      - name: Build
-        id: build
-        run: |
-          make
+      # - name: Build
+      #   id: build
+      #   run: |
+      #     make
 
-      - name: Create Directory and Move Files
-        run: |
-          NEW_VERSION="${{ steps.increment_version.outputs.new_version }}"
-          mkdir -p build/$NEW_VERSION
-          mv rogue.tgz build/$NEW_VERSION/rogue$NEW_VERSION.tgz
-          mv C25_APP* build/$NEW_VERSION
+      # - name: Create Directory and Move Files
+      #   run: |
+      #     NEW_VERSION="${{ steps.increment_version.outputs.new_version }}"
+      #     mkdir -p build/$NEW_VERSION
+      #     mv rogue.tgz build/$NEW_VERSION/rogue$NEW_VERSION.tgz
+      #     mv C25_APP* build/$NEW_VERSION
 
       - name: Pause Execution
         run: sleep infinity
