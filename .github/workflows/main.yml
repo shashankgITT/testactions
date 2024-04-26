@@ -54,7 +54,7 @@ jobs:
       
       - name: Get New Version
         run: |
-          NEW_VERSION="${{ needs.build-and-release.outputs.new_version }}"
+          NEW_VERSION="${{ steps.increment_version.outputs.new_version }}"
           git tag -a $NEW_VERSION -m "Version $NEW_VERSION"
           git push origin $NEW_VERSION
       
