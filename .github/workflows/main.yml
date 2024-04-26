@@ -54,6 +54,8 @@ jobs:
       
       - name: Create annotated tag
         run: |
+          git config --global user.email "shashank.gorana@intimetec.com "
+          git config --global user.name "Shashank Gorana"
           VERSION="${{ steps.increment_version.outputs.new_version }}"
           TAG="v$VERSION"
           git tag -a "$TAG" -m "Release on $(date +%F) for $TAG"
