@@ -59,6 +59,13 @@ jobs:
           VERSION="${{ steps.increment_version.outputs.new_version }}"
           TAG="v$VERSION"
           git tag -a "$TAG" -m "Release on $(date +%F) for $TAG"
+      
+      - name: Push changes and tag
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
+          tags: true
 
       
       - name: Install Dependencies
