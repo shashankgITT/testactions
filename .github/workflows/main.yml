@@ -52,18 +52,11 @@ jobs:
 
           sed -i "s/const VERSION = \"$OLD_VERSION\"/const VERSION = \"$NEW_VERSION\"/" "$VERSION_FILE"
       
-      - name: Bump version and push tag
-        id: tag_version
-        uses: mathieudutour/github-tag-action@v6.2
-        with:
-          github_token: ${{ secrets.GH_PAT }}
-          
-      - name: Create a GitHub release
-        uses: ncipollo/release-action@v1
-        with:
-          tag: ${{ steps.tag_version.outputs.new_tag }}
-          name: Release ${{ steps.tag_version.outputs.new_tag }}
-          body: ${{ steps.tag_version.outputs.changelog }}
+      - name: Create annotated tag
+        run: |
+          VERSION="${{ steps.increment_version.outputs.new_version }}"
+          TAG="v$VERSION"
+          git tag -a "$TAG" -m "Release on $(date +%F) for $TAG"
 
       
       - name: Install Dependencies
