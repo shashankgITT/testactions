@@ -55,6 +55,7 @@ jobs:
       - name: Install Dependencies
         run: |
           sudo apt-get update
+          sudo apt-get install -y libunwind-dev
           sudo apt-get install -y libgio2.0-cil-dev libgio2.0-cil-dev libgstreamer1.0-dev
 
       # - name: Build
