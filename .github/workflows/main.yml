@@ -54,6 +54,7 @@ jobs:
       
       - name: Create annotated tag
         run: |
+          git config --local --unset-all "http.https://github.com/.extraheader"
           git config --global user.email "shashank.gorana@intimetec.com "
           git config --global user.name "shashankgITT"
       
