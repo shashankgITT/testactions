@@ -52,10 +52,6 @@ jobs:
 
           sed -i "s/const VERSION = \"$OLD_VERSION\"/const VERSION = \"$NEW_VERSION\"/" "$VERSION_FILE"
       
-      - name: Create annotated tag
-        run: |
-          git config --global user.name "shashankgITT"
-          git config --global user.password "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"
       
       - name: Create pull request
         id: create_pr
