@@ -1,3 +1,3 @@
 package sysinfo
 
-const VERSION = "7.2.02"
+const VERSION = "7.2.03"
