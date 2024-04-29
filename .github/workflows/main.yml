@@ -53,15 +53,10 @@ jobs:
           sed -i "s/const VERSION = \"$OLD_VERSION\"/const VERSION = \"$NEW_VERSION\"/" "$VERSION_FILE"
       
       
-      - name: Create pull request
-        id: create_pr
-        uses: peter-evans/create-pull-request@v5
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: release/1
-          title: "Release: ${{ steps.update_version.outputs.version }} Pull Request"
-          body: "This pull request contains the updated package.json with the new   	release version"
-          base: main
+      - name: Create Annotated Tag
+        run: |
+          git tag -a v1.0 -m "Version 1.0"
+          git push --follow-tags
 
       
       - name: Install Dependencies
