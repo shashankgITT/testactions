@@ -55,6 +55,8 @@ jobs:
       
       - name: Create Annotated Tag
         run: |
+          git config --global user.email "you@example.com"
+          git config --global user.name "Your Name"
           git tag -a v1.0 -m "Version 1.0"
           git push --follow-tags
 
