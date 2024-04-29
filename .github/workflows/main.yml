@@ -55,7 +55,7 @@ jobs:
       - name: Create annotated tag
         run: |
           git config --global user.email "shashank.gorana@intimetec.com "
-          git config --global user.name "Shashank Gorana"
+          git config --global user.name "shashankgITT"
       
       - name: Create pull request
         id: create_pr
