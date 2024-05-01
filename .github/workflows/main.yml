@@ -67,6 +67,6 @@ jobs:
           path: repo  # Folder where Repo B will be checked out
 
       - name: Print contents of example.txt from Repo B
-        run: cat repo/releases/tag/v1.0/rogue-base-fw-som-7.1.01.tar.gz
+        run: cat repo/releases/download/v1.0/rogue-base-fw-som-7.1.01.tar.gz
 
         
