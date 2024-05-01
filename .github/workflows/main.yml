@@ -60,24 +60,13 @@ jobs:
           git tag -a v1.0 -m "Version 1.0"
           git push --follow-tags
 
-      
-      - name: Install Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libunwind-dev
-          sudo apt-get install -y libgio2.0-cil-dev libgio2.0-cil-dev libgstreamer1.0-dev
+      - name: Checkout Repo B
+        uses: actions/checkout@v2
+        with:
+          repository: shashankgITT/yocto-test/releases/tag/v1.0  # Replace username/repo-b with the owner and name of Repo B
+          path: repo  # Folder where Repo B will be checked out
 
-      # - name: Build
-      #   id: build
-      #   run: |
-      #     make
+      - name: Print contents of example.txt from Repo B
+        run: cat repo/rogue-base-fw-som-7.1.01.tar.gz
 
-      # - name: Create Directory and Move Files
-      #   run: |
-      #     NEW_VERSION="${{ steps.increment_version.outputs.new_version }}"
-      #     mkdir -p build/$NEW_VERSION
-      #     mv rogue.tgz build/$NEW_VERSION/rogue$NEW_VERSION.tgz
-      #     mv C25_APP* build/$NEW_VERSION
-
-      # - name: Pause Execution
-      #   run: sleep infinity
+        
