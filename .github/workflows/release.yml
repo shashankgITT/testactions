@@ -1,9 +1,8 @@
 name: Create Release
 
 on:
-  push:
-    tags:
-      - 'v*' # Trigger on any tag that starts with 'v'
+  repository_dispatch:
+    types: [create-release]
 
 jobs:
   build:
