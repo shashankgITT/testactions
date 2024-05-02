@@ -8,30 +8,72 @@ on:
 jobs:
   build-and-release:
     runs-on: ubuntu-22.04
+    
     steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: NameOfYourArtifact
-      - name: Create release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: TODO
-          draft: true
-          prerelease: false
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
-      # - name: Upload Release Asset
-      #   id: upload-release-asset 
-      #   uses: actions/upload-release-asset@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-      #     asset_path: NameOfYourArtifact.exe
-      #     asset_name: NameOfYourArtifact.exe
-      #     asset_content_type: application/octet-stream    
+      - name: Set Up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.19.10
+
+      - name: Retrieve Version
+        id: get_version
+        run: |
+          VERSION_FILE="version.go"
+          OLD_VERSION=$(grep -oP 'const VERSION = "\K[^"]+' "$VERSION_FILE")
+          echo "::set-output name=old_version::$OLD_VERSION"
+      
+      - name: Increment Version
+        id: increment_version
+        run: |
+          VERSION_FILE="version.go"
+          OLD_VERSION="${{ steps.get_version.outputs.old_version }}"
+          IFS='.' read -r -a VERSION_PARTS <<< "$OLD_VERSION"
+          MAJOR="${VERSION_PARTS[0]}"
+          MINOR="${VERSION_PARTS[1]}"
+          PATCH="${VERSION_PARTS[2]}"
+          if [ "$PATCH" -eq 99 ]; then
+            PATCH=0
+            if [ "$MINOR" -eq 9 ]; then
+              MINOR=0
+              MAJOR=$((MAJOR + 1))
+            else
+              MINOR=$((MINOR + 1))
+            fi
+          else
+            PATCH=$((10#$PATCH + 1))
+          fi
+          PATCH=$(printf "%02d" "$PATCH")
+          NEW_VERSION="$MAJOR.$MINOR.$PATCH"
+          echo "::set-output name=new_version::$NEW_VERSION"
+          sed -i "s/const VERSION = \"$OLD_VERSION\"/const VERSION = \"$NEW_VERSION\"/" "$VERSION_FILE"
+      
+      
+      - name: Create Annotated Tag
+        run: |
+          git config --global user.email "you@example.com"
+          git config --global user.name "Your Name"
+          git tag -a v1.1 -m "Version 1.1"
+          git push --follow-tags
+      
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libunwind-dev
+          sudo apt-get install -y libgio2.0-cil-dev libgio2.0-cil-dev libgstreamer1.0-dev
+      # - name: Build
+      #   id: build
+      #   run: |
+      #     make
+
+      # - name: Create Directory and Move Files
+      #   run: |
+      #     NEW_VERSION="${{ steps.increment_version.outputs.new_version }}"
+      #     mkdir -p build/$NEW_VERSION
+      #     mv rogue.tgz build/$NEW_VERSION/rogue$NEW_VERSION.tgz
+      #     mv C25_APP* build/$NEW_VERSION
+
+      # - name: Pause Execution
+      #   run: sleep infinity
